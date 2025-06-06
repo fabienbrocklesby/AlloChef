@@ -12,8 +12,7 @@
         "tailwindcss": "^4.1.8"
       },
       "devDependencies": {
-        "@tailwindcss/cli": "^4.1.8",
-        "daisyui": "^5.0.43"
+        "@tailwindcss/cli": "^4.1.8"
       }
     },
     "node_modules/@ampproject/remapping": {
@@ -1309,6 +1308,19 @@
         "url": "https://opencollective.com/parcel"
       }
     },
+    "node_modules/@parcel/watcher/node_modules/detect-libc": {
+      "version": "1.0.3",
+      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-1.0.3.tgz",
+      "integrity": "sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "bin": {
+        "detect-libc": "bin/detect-libc.js"
+      },
+      "engines": {
+        "node": ">=0.10"
+      }
+    },
     "node_modules/@rollup/pluginutils": {
       "version": "5.1.4",
       "resolved": "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-5.1.4.tgz",
@@ -1952,16 +1964,6 @@
       ],
       "engines": {
         "node": ">= 10"
-      }
-    },
-    "node_modules/@tailwindcss/oxide/node_modules/detect-libc": {
-      "version": "2.0.4",
-      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.4.tgz",
-      "integrity": "sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==",
-      "dev": true,
-      "license": "Apache-2.0",
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/@types/debug": {
@@ -2624,16 +2626,6 @@
         "node": ">=4"
       }
     },
-    "node_modules/daisyui": {
-      "version": "5.0.43",
-      "resolved": "https://registry.npmjs.org/daisyui/-/daisyui-5.0.43.tgz",
-      "integrity": "sha512-2pshHJ73vetSpsbAyaOncGnNYL0mwvgseS1EWy1I9Qpw8D11OuBoDNIWrPIME4UFcq2xuff3A9x+eXbuFR9fUQ==",
-      "dev": true,
-      "license": "MIT",
-      "funding": {
-        "url": "https://github.com/saadeghi/daisyui?sponsor=1"
-      }
-    },
     "node_modules/debug": {
       "version": "4.4.1",
       "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.1.tgz",
@@ -2686,16 +2678,13 @@
       "license": "MIT"
     },
     "node_modules/detect-libc": {
-      "version": "1.0.3",
-      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-1.0.3.tgz",
-      "integrity": "sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==",
-      "dev": true,
+      "version": "2.0.4",
+      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.4.tgz",
+      "integrity": "sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==",
+      "devOptional": true,
       "license": "Apache-2.0",
-      "bin": {
-        "detect-libc": "bin/detect-libc.js"
-      },
       "engines": {
-        "node": ">=0.10"
+        "node": ">=8"
       }
     },
     "node_modules/deterministic-object-hash": {
@@ -3600,16 +3589,6 @@
       "funding": {
         "type": "opencollective",
         "url": "https://opencollective.com/parcel"
-      }
-    },
-    "node_modules/lightningcss/node_modules/detect-libc": {
-      "version": "2.0.4",
-      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.4.tgz",
-      "integrity": "sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==",
-      "devOptional": true,
-      "license": "Apache-2.0",
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/longest-streak": {
@@ -5184,16 +5163,6 @@
         "@img/sharp-wasm32": "0.33.5",
         "@img/sharp-win32-ia32": "0.33.5",
         "@img/sharp-win32-x64": "0.33.5"
-      }
-    },
-    "node_modules/sharp/node_modules/detect-libc": {
-      "version": "2.0.4",
-      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.4.tgz",
-      "integrity": "sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==",
-      "license": "Apache-2.0",
-      "optional": true,
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/shiki": {
