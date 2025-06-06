@@ -13,16 +13,20 @@
 				/>
 			</div>
 
-			<div class="dropdown dropdown-end sm:hidden">
-				<div
-					tabindex="0"
-					role="button"
-					class="btn btn-square btn-ghost text-white hover:bg-white/20"
+			<details class="dropdown dropdown-end sm:hidden" id="mobile-menu">
+				<summary
+					class="btn btn-square btn-ghost text-white hover:bg-white/20 list-none"
 				>
-					<i class="fas fa-bars text-2xl"></i>
-				</div>
+					<div class="relative w-6 h-6">
+						<i
+							class="fas fa-bars text-2xl absolute inset-0 transition-all duration-300 opacity-100"
+							id="menu-icon"></i>
+						<i
+							class="fas fa-times text-2xl absolute inset-0 transition-all duration-300 opacity-0"
+							id="close-icon"></i>
+					</div>
+				</summary>
 				<ul
-					tabindex="0"
 					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-56 p-3 shadow-xl border"
 				>
 					<li>
@@ -62,48 +66,48 @@
 						>
 					</li>
 				</ul>
-			</div>
+			</details>
 		</div>
 
 		<div class="w-full hidden sm:flex justify-center">
-			<div class="bg-base-100 rounded-xl shadow-lg px-8">
+			<div class="bg-base-100 rounded-xl shadow-lg px-2 md:px-4 lg:px-8">
 				<ul
-					class="menu menu-horizontal justify-center space-x-8 font-bold text-lg"
+					class="menu menu-horizontal justify-center space-x-1 sm:space-x-4 md:space-x-8 font-bold text-xs sm:text-lg whitespace-nowrap"
 				>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
 							>Home</a
 						>
 					</li>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
 							>About</a
 						>
 					</li>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
-							>Prices & Packages</a
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							>Prices</a
 						>
 					</li>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
 							>Who I Am</a
 						>
 					</li>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
 							>Gallery</a
 						>
 					</li>
 					<li>
 						<a
-							class="px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
-							>Enquire Now</a
+							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
+							>Enquire</a
 						>
 					</li>
 				</ul>
@@ -111,3 +115,27 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	const menu = document.getElementById("mobile-menu");
+	const menuIcon = document.getElementById("menu-icon");
+	const closeIcon = document.getElementById("close-icon");
+
+	menu?.addEventListener("toggle", () => {
+		if (menu.open) {
+			menuIcon.style.opacity = "0";
+			closeIcon.style.opacity = "1";
+		} else {
+			menuIcon.style.opacity = "1";
+			closeIcon.style.opacity = "0";
+		}
+	});
+
+	document.addEventListener("click", (e) => {
+		if (menu && !menu.contains(e.target) && menu.open) {
+			menu.open = false;
+			menuIcon.style.opacity = "1";
+			closeIcon.style.opacity = "0";
+		}
+	});
+</script>
