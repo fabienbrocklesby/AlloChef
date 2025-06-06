@@ -1,0 +1,337 @@
+---
+import Navbar from "../components/navbar.astro";
+import Footer from "../components/footer.astro";
+---
+
+<html lang="en" data-theme="main">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>About Allô Chef | Professional Home Batch Cooking Service</title>
+		<meta
+			name="description"
+			content="Learn about our professional batch cooking process. From meal planning to shopping, cooking in your kitchen, and leaving it spotless - discover how Allô Chef transforms your weekly routine."
+		/>
+		<meta
+			name="keywords"
+			content="about batch cooking, meal prep process, personal chef service, home cooking, meal planning"
+		/>
+		<link href="./styles/output.css" rel="stylesheet" />
+		<script
+			src="https://kit.fontawesome.com/d1c56b39df.js"
+			crossorigin="anonymous"></script>
+	</head>
+	<body class="min-h-screen bg-base-300">
+		<Navbar />
+
+		<div class="container mx-auto px-4 py-16 max-w-7xl">
+			<div class="text-center mb-20">
+				<h1 class="text-5xl lg:text-7xl font-bold mb-8 text-neutral">
+					About Allô Chef
+				</h1>
+				<p
+					class="text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed"
+				>
+					Discover how our professional batch cooking service transforms your
+					weekly routine into stress-free, delicious dining experiences
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+				<div class="text-center lg:text-left">
+					<h2 class="text-4xl lg:text-5xl font-bold mb-8 text-neutral">
+						My Concept
+					</h2>
+					<div class="bg-white rounded-3xl p-10 shadow-2xl">
+						<p class="text-xl lg:text-2xl text-gray-700 leading-relaxed mb-6">
+							Allô Chef brings professional batch cooking directly to your home,
+							transforming the way busy families approach weekly meal
+							preparation.
+						</p>
+						<p class="text-lg text-gray-600 leading-relaxed">
+							Our unique approach combines personalized meal planning,
+							professional shopping expertise, and restaurant-quality cooking -
+							all performed in the comfort of your own kitchen. The result? A
+							week's worth of delicious, healthy meals ready when you need them
+							most.
+						</p>
+					</div>
+				</div>
+				<div class="flex justify-center">
+					<div
+						class="w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl"
+					>
+						<img
+							src="/images/image7.jpeg"
+							alt="Professional chef posing with prepared weekly batch cooking meals"
+							class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white py-20">
+			<div class="container mx-auto px-4 max-w-7xl">
+				<div class="text-center mb-20">
+					<h2 class="text-5xl lg:text-6xl font-bold mb-8 text-neutral">
+						How It Works
+					</h2>
+					<p class="text-xl text-gray-700 max-w-3xl mx-auto">
+						Our proven 5-step process ensures perfect results every time
+					</p>
+				</div>
+
+				<div class="space-y-20">
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+						<div class="order-2 lg:order-1">
+							<div class="bg-primary/5 rounded-3xl p-10">
+								<div class="flex items-start mb-8 gap-6">
+									<div
+										class="bg-primary rounded-full w-16 h-16 flex items-center justify-center flex-shrink-0"
+									>
+										<span class="text-white font-bold text-4xl -mt-2">1</span>
+									</div>
+									<div>
+										<h3 class="text-3xl font-bold text-primary mb-4">
+											Your Weekly Meal Plans
+										</h3>
+										<p class="text-lg text-gray-700 leading-relaxed">
+											Let's find out your needs and dietary requirements through
+											our first meeting and organize your weekly meals! We'll
+											discuss your preferences, family size, cooking styles, and
+											any dietary restrictions to create the perfect meal plan
+											just for you.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="order-1 lg:order-2">
+							<div class="w-full flex justify-center">
+								<div
+									class="w-full sm:w-1/2 lg:w-full aspect-square rounded-3xl overflow-hidden shadow-xl"
+								>
+									<img
+										src="/images/image3.jpeg"
+										alt="Chef precisely chopping fresh carrots for meal preparation"
+										class="w-full h-full object-cover"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+						<div class="order-1">
+							<div class="w-full flex justify-center">
+								<div
+									class="w-full sm:w-1/2 lg:w-full aspect-square rounded-3xl overflow-hidden shadow-xl"
+								>
+									<img
+										src="/images/image6.jpeg"
+										alt="Fresh ingredients laid out before cooking session"
+										class="w-full h-full object-cover"
+									/>
+								</div>
+							</div>
+						</div>
+						<div class="order-2">
+							<div class="bg-primary/5 rounded-3xl p-10">
+								<div class="flex items-start mb-8 gap-6">
+									<div
+										class="bg-primary rounded-full w-16 h-16 flex items-center justify-center flex-shrink-0"
+									>
+										<span class="text-white font-bold text-4xl -mt-2">2</span>
+									</div>
+									<div>
+										<h3 class="text-3xl font-bold text-primary mb-4">
+											A Detailed Shopping List
+										</h3>
+										<p class="text-lg text-gray-700 leading-relaxed">
+											I create a comprehensive shopping list with exact
+											quantities for you to purchase at your favorite
+											supermarket. Every ingredient is carefully calculated to
+											minimize waste while ensuring you have everything needed
+											for a perfect week of meals.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+						<div class="order-2 lg:order-1">
+							<div class="bg-primary/5 rounded-3xl p-10">
+								<div class="flex items-start mb-8 gap-6">
+									<div
+										class="bg-primary rounded-full w-16 h-16 flex items-center justify-center flex-shrink-0"
+									>
+										<span class="text-white font-bold text-4xl -mt-3">3</span>
+									</div>
+									<div>
+										<h3 class="text-3xl font-bold text-primary mb-4">
+											Cooking at Your House
+										</h3>
+										<p class="text-lg text-gray-700 leading-relaxed">
+											I operate in your kitchen and cook all your meals for the
+											week using professional techniques and restaurant-quality
+											standards. Watch as your kitchen transforms into a
+											culinary workspace where magic happens in under 3 hours.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="order-1 lg:order-2">
+							<div class="w-full flex justify-center">
+								<div
+									class="w-full sm:w-1/2 lg:w-full aspect-square rounded-3xl overflow-hidden shadow-xl"
+								>
+									<img
+										src="/images/image4.jpeg"
+										alt="Professional chef cooking at the stove during batch cooking session"
+										class="w-full h-full object-cover"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+						<div class="order-1">
+							<div class="w-full flex justify-center">
+								<div
+									class="w-full sm:w-1/2 lg:w-full aspect-square rounded-3xl overflow-hidden shadow-xl"
+								>
+									<img
+										src="/images/image1.jpeg"
+										alt="Chef displaying completed meals after cooking session"
+										class="w-full h-full object-cover"
+									/>
+								</div>
+							</div>
+						</div>
+						<div class="order-2">
+							<div class="bg-primary/5 rounded-3xl p-10">
+								<div class="flex items-start mb-8 gap-6">
+									<div
+										class="bg-primary rounded-full w-16 h-16 flex items-center justify-center flex-shrink-0"
+									>
+										<span class="text-white font-bold text-4xl -mt-4">4</span>
+									</div>
+									<div>
+										<h3 class="text-3xl font-bold text-primary mb-4">
+											Leaving Your Kitchen Clean
+										</h3>
+										<p class="text-lg text-gray-700 leading-relaxed">
+											Bonus... your kitchen will be left as if I had never been
+											there! Professional cleanup is included in every session.
+											No dishes, no mess, no stress - just perfectly organized
+											meals ready for your week ahead.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="bg-gradient-to-r from-primary/10 to-primary/5 rounded-3xl p-16 text-center"
+					>
+						<div class="flex flex-col items-center mb-8">
+							<div
+								class="bg-primary rounded-full w-16 h-16 flex items-center justify-center mb-6"
+							>
+								<span class="text-white font-bold text-4xl -mt-4">5</span>
+							</div>
+							<h3 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
+								Enjoy and Have a Snug Evening
+							</h3>
+							<p class="text-xl text-gray-700 leading-relaxed max-w-4xl">
+								After a long day, easily heat up your meals following the given
+								instructions and simply enjoy! Transform your hectic evenings
+								into peaceful family time with restaurant-quality meals ready in
+								minutes.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-base-300 py-20">
+			<div class="container mx-auto px-4 max-w-7xl">
+				<div class="text-center mb-16">
+					<h2 class="text-5xl font-bold mb-8 text-neutral">
+						Why Choose Our Process?
+					</h2>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div
+						class="bg-white rounded-3xl p-8 shadow-xl text-center hover:shadow-2xl transition-shadow duration-300"
+					>
+						<i class="fas fa-user-check text-primary text-5xl mb-6"></i>
+						<h3 class="text-2xl font-bold text-neutral mb-4">
+							Personalized Service
+						</h3>
+						<p class="text-gray-600 leading-relaxed">
+							Every meal plan is tailored to your family's unique tastes,
+							dietary needs, and lifestyle preferences.
+						</p>
+					</div>
+
+					<div
+						class="bg-white rounded-3xl p-8 shadow-xl text-center hover:shadow-2xl transition-shadow duration-300"
+					>
+						<i class="fas fa-certificate text-primary text-5xl mb-6"></i>
+						<h3 class="text-2xl font-bold text-neutral mb-4">
+							Professional Quality
+						</h3>
+						<p class="text-gray-600 leading-relaxed">
+							Restaurant-trained chef with years of experience in batch cooking
+							and meal preparation techniques.
+						</p>
+					</div>
+
+					<div
+						class="bg-white rounded-3xl p-8 shadow-xl text-center hover:shadow-2xl transition-shadow duration-300"
+					>
+						<i class="fas fa-home text-primary text-5xl mb-6"></i>
+						<h3 class="text-2xl font-bold text-neutral mb-4">
+							Your Kitchen, Your Rules
+						</h3>
+						<p class="text-gray-600 leading-relaxed">
+							We work in your space, respecting your preferences and leaving
+							everything exactly as you like it.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-primary py-20">
+			<div class="container mx-auto px-4 max-w-5xl text-center">
+				<h2 class="text-4xl lg:text-5xl font-bold text-white mb-8">
+					Ready to Experience the Allô Chef Difference?
+				</h2>
+				<p class="text-xl text-white/90 mb-10 max-w-3xl mx-auto">
+					Let us transform your weekly routine with our proven batch cooking
+					process
+				</p>
+				<button
+					class="btn btn-neutral btn-lg px-16 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+				>
+					<i class="fas fa-phone mr-4"></i>
+					Book Your First Session
+				</button>
+			</div>
+		</div>
+
+		<Footer />
+	</body>
+</html>
