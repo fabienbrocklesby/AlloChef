@@ -1,0 +1,147 @@
+---
+import Navbar from "../components/navbar.astro";
+import Footer from "../components/footer.astro";
+---
+
+<html lang="en" data-theme="main">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Who Am I | Allô Chef</title>
+		<link href="/styles/output.css" rel="stylesheet" />
+	</head>
+	<body class="min-h-screen bg-base-300">
+		<Navbar />
+
+		<div class="container mx-auto px-4 py-16 max-w-7xl">
+			<div class="text-center mb-20">
+				<h1 class="text-5xl lg:text-7xl font-bold mb-8 text-neutral">
+					Meet Chef David
+				</h1>
+				<p class="text-2xl text-primary font-medium">
+					"I'm David Barbier, the kitchen fairy of your day-to-day life"
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+				<div>
+					<div class="bg-white rounded-3xl p-10 shadow-2xl">
+						<h2 class="text-3xl font-bold text-neutral mb-6">My Journey</h2>
+						<p class="text-lg text-gray-700 leading-relaxed mb-6">
+							I trained in France for five years at a top catering college in
+							the 90s, then spent three decades honing my craft in
+							Michelin-starred restaurants, fine dining venues, gastro pubs,
+							taverns and cafes across France, England and New Zealand.
+						</p>
+						<p class="text-lg text-gray-700 leading-relaxed">
+							My passion is simple: good food made with fresh, local, seasonal
+							ingredients. After years of demanding professional kitchens, I'm
+							here to bring that expertise into Kiwi homes, making mealtime
+							stress-free and delicious.
+						</p>
+					</div>
+				</div>
+				<div class="flex justify-center">
+					<div
+						class="w-full max-w-md aspect-square rounded-3xl overflow-hidden shadow-2xl"
+					>
+						<img
+							src="/images/image1.jpeg"
+							alt="Chef David Barbier"
+							class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+				<div class="order-2 lg:order-1 flex justify-center">
+					<div
+						class="w-full max-w-md aspect-square rounded-3xl overflow-hidden shadow-2xl"
+					>
+						<img
+							src="/images/image3.jpeg"
+							alt="Chef David cutting fresh vegetables"
+							class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+						/>
+					</div>
+				</div>
+				<div class="order-1 lg:order-2">
+					<div class="bg-white rounded-3xl p-10 shadow-2xl">
+						<h2 class="text-3xl font-bold text-neutral mb-6">Why Allô Chef?</h2>
+						<p class="text-lg text-gray-700 leading-relaxed mb-6">
+							Too many families default to pasta with butter and cheese, rely on
+							takeaways or grab industrial ready meals. It works in a pinch, but
+							it's costly and seldom healthy. You deserve better.
+						</p>
+						<p class="text-lg text-gray-700 leading-relaxed">
+							Allô Chef was born from the idea of supporting busy households
+							overwhelmed by dinner prep. I create honest, homemade meals
+							tailored to your tastes and schedule, using only the best seasonal
+							produce.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white py-20">
+			<div class="container mx-auto px-4 max-w-6xl">
+				<div class="text-center mb-16">
+					<h2 class="text-4xl font-bold text-neutral mb-8">My Philosophy</h2>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<div class="bg-primary/5 rounded-3xl p-8 text-center">
+						<h3 class="text-xl font-bold text-primary mb-4">
+							Love & Community
+						</h3>
+						<p class="text-gray-700">
+							I believe cooking is an act of love and community. When you sit
+							down to one of my meals, I want it to taste like comfort,
+							creativity and care.
+						</p>
+					</div>
+					<div class="bg-primary/5 rounded-3xl p-8 text-center">
+						<h3 class="text-xl font-bold text-primary mb-4">
+							Fresh & Seasonal
+						</h3>
+						<p class="text-gray-700">
+							Outside the kitchen I love gardening, foraging for fresh herbs and
+							learning from local farmers. This connection ensures dishes always
+							reflect the season.
+						</p>
+					</div>
+					<div class="bg-primary/5 rounded-3xl p-8 text-center">
+						<h3 class="text-xl font-bold text-primary mb-4">
+							Your Evenings Back
+						</h3>
+						<p class="text-gray-700">
+							My mission is to give you back your evenings, nourish your family
+							with honest food and remind you why home cooking can be inspiring,
+							not a chore.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-primary py-20">
+			<div class="container mx-auto px-4 max-w-4xl text-center">
+				<h2 class="text-4xl font-bold text-white mb-8">
+					Ready to Transform Your Kitchen?
+				</h2>
+				<p class="text-xl text-white/90 mb-10">
+					Let's discuss how I can bring restaurant-quality meals to your home
+				</p>
+				<a
+					href="/contact"
+					class="btn btn-neutral btn-lg px-16 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+				>
+					Contact Me Today
+				</a>
+			</div>
+		</div>
+
+		<Footer />
+	</body>
+</html>
