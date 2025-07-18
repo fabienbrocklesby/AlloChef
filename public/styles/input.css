@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Cormorant Garamond", serif;
+  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Lora", serif;
   --font-weight-thin: 300;
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -25,6 +26,33 @@ input, textarea {
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+}
+
+/* Apply Lora font to all headers and titles */
+h1, h2, h3, h4, h5, h6,
+.text-4xl, .text-5xl, .text-6xl, .text-7xl,
+.text-3xl, .text-2xl, .text-xl {
+  font-family: "Lora", serif;
+  font-weight: 600;
+}
+
+/* Ensure body content uses Montserrat */
+body, p, span, div, a, button, input, textarea, select {
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Utility classes for manual font control */
+.font-lora {
+  font-family: "Lora", serif;
+}
+
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-lora-semibold {
+  font-family: "Lora", serif;
+  font-weight: 600;
 }
 
 @plugin "daisyui";
