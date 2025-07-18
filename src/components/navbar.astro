@@ -60,6 +60,7 @@
 					</li>
 					<li>
 						<a
+							href="/contact"
 							class="font-semibold text-base py-3 hover:bg-primary hover:text-primary-content rounded-lg"
 							>Enquire Now</a
 						>
@@ -103,6 +104,7 @@
 					</li>
 					<li>
 						<a
+							href="/contact"
 							class="px-2 md:px-3 lg:px-6 py-3 hover:bg-primary hover:text-primary-content rounded-lg transition-all duration-300"
 							>Enquire</a
 						>
@@ -114,25 +116,25 @@
 </div>
 
 <script>
-	const menu = document.getElementById("mobile-menu");
+	const menu = document.getElementById("mobile-menu") as HTMLDetailsElement | null;
 	const menuIcon = document.getElementById("menu-icon");
 	const closeIcon = document.getElementById("close-icon");
 
 	menu?.addEventListener("toggle", () => {
-		if (menu.open) {
-			menuIcon.style.opacity = "0";
-			closeIcon.style.opacity = "1";
+		if (menu && menu.open) {
+			if (menuIcon) menuIcon.style.opacity = "0";
+			if (closeIcon) closeIcon.style.opacity = "1";
 		} else {
-			menuIcon.style.opacity = "1";
-			closeIcon.style.opacity = "0";
+			if (menuIcon) menuIcon.style.opacity = "1";
+			if (closeIcon) closeIcon.style.opacity = "0";
 		}
 	});
 
 	document.addEventListener("click", (e) => {
-		if (menu && !menu.contains(e.target) && menu.open) {
+		if (menu && !menu.contains(e.target as HTMLElement) && menu.open) {
 			menu.open = false;
-			menuIcon.style.opacity = "1";
-			closeIcon.style.opacity = "0";
+			if (menuIcon) menuIcon.style.opacity = "1";
+			if (closeIcon) closeIcon.style.opacity = "0";
 		}
 	});
 </script>
