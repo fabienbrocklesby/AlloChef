@@ -1,20 +1,25 @@
-<div class="navbar bg-neutral/95 shadow-md flex justify-center py-4">
+<div class="navbar bg-neutral/95 shadow-md flex flex-col justify-center py-4 relative">
+	<div class="absolute sm:flex items-center inset-0 w-full h-full z-50 hidden">
+		<div class="w-full h-4 bg-primary -mt-20 z-[60]"></div>
+	</div>
 	<div class="container flex flex-col justify-center max-w-6xl mx-auto px-4">
 		<div
 			class="w-full flex justify-between sm:justify-center items-center sm:pt-6 sm:pb-10 relative"
 		>
-			<a
-				href="/"
-				class="w-16 h-16 sm:w-48 sm:h-48 p-2 sm:p-5 rounded-full bg-white shadow-lg sm:mx-auto"
-			>
-				<img
-					src="/images/Logo.svg"
-					alt="Logo"
-					class="w-full h-full object-contain"
-				/>
-			</a>
+			<div class="w-full flex items-center !z-[70]">
+				<a
+					href="/"
+					class="w-16 h-16 sm:w-62 sm:h-62 p-2 sm:p-5 rounded-full bg-white shadow-lg sm:mx-auto"
+				>
+					<img
+						src="/images/Logo.svg"
+						alt="Logo"
+						class="w-full h-full object-contain"
+					/>
+				</a>
+			</div>
 
-			<details class="dropdown dropdown-end sm:hidden" id="mobile-menu">
+			<details class="dropdown dropdown-end sm:hidden z-[80]" id="mobile-menu">
 				<summary
 					class="btn btn-square btn-ghost text-white hover:bg-white/20 list-none"
 				>
@@ -69,7 +74,7 @@
 			</details>
 		</div>
 
-		<div class="w-full hidden sm:flex justify-center">
+		<div class="w-full hidden sm:flex justify-center z-[80]">
 			<div class="bg-base-100 rounded-xl shadow-lg px-2 md:px-4 lg:px-8">
 				<ul
 					class="menu menu-horizontal justify-center space-x-1 sm:space-x-4 md:space-x-8 font-bold text-xs sm:text-lg whitespace-nowrap"
