@@ -1,16 +1,36 @@
-export async function onRequestPost(context) {
-  const { request, env } = context;
+const ALLOWED_ORIGINS = [
+  'http://localhost:4321',
+  'https://localhost:4321',
+  'http://127.0.0.1:4321',
+  'https://127.0.0.1:4321',
+  'https://allochef.co.nz',
+  'https://www.allochef.co.nz'
+];
 
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+function buildCorsHeaders(origin) {
+  const allowed = origin && ALLOWED_ORIGINS.includes(origin) ? origin : null;
+  return {
+    'Vary': 'Origin',
+    'Access-Control-Allow-Origin': allowed || 'https://allochef.co.nz',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
+}
 
-  const respond = (status, payload) => new Response(JSON.stringify(payload), {
+export async function onRequestPost(context) {
+  const { request, env } = context;
+  const origin = request.headers.get('Origin') || '';
+  const originAllowed = !origin || ALLOWED_ORIGINS.includes(origin);
+  const corsHeaders = buildCorsHeaders(origin);
+
+  const respond = (status, payload, extraHeaders={}) => new Response(JSON.stringify(payload), {
     status,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+    headers: { 'Content-Type': 'application/json', ...corsHeaders, ...extraHeaders }
   });
+
+  if (!originAllowed) {
+    return respond(403, { success: false, code: 'ORIGIN_NOT_ALLOWED', message: 'Origin not allowed.' });
+  }
 
   try {
     if (request.method !== 'POST') {
@@ -158,13 +178,8 @@ export async function onRequestPost(context) {
   }
 }
 
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  const corsHeaders = buildCorsHeaders(origin);
+  return new Response(null, { status: 200, headers: corsHeaders });
 }
