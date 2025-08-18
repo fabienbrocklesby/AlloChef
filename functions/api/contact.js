@@ -162,27 +162,35 @@ export async function onRequestPost(context) {
           body: JSON.stringify(payload),
         });
         if (!resp.ok) {
-          const text = await resp.text();
-          console.error(`SendGrid ${label} email failed`, resp.status, text);
-          return { ok: false, status: resp.status, body: text };
+          let text = await resp.text();
+          let parsed;
+            try { parsed = JSON.parse(text); } catch(_){}
+          let errorMessage;
+          if (parsed && parsed.errors && Array.isArray(parsed.errors) && parsed.errors.length) {
+            errorMessage = parsed.errors.map(e => e.message).join('; ').slice(0,300);
+          } else {
+            errorMessage = text.slice(0,300);
+          }
+          console.error(`SendGrid ${label} email failed`, resp.status, errorMessage);
+          return { ok: false, status: resp.status, body: text, errorMessage };
         }
         return { ok: true };
       } catch (err) {
         console.error(`SendGrid ${label} email threw`, err);
-        return { ok: false, status: 0, body: String(err) };
+        return { ok: false, status: 0, body: String(err), errorMessage: String(err) };
       }
     }
 
     stage = 'send_chef';
     const chefResult = await sendEmail(chefEmailData, 'chef');
     if (!chefResult.ok) {
-      return respond(200, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.' , debug: debug ? { stage, detail: chefResult } : undefined });
+      return respond(200, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.', debug: debug ? { stage, status: chefResult.status, error: chefResult.errorMessage } : undefined });
     }
 
     stage = 'send_customer';
     const customerResult = await sendEmail(customerEmailData, 'customer');
     if (!customerResult.ok) {
-      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.' , debug: debug ? { stage, detail: customerResult } : undefined });
+      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.', debug: debug ? { stage, status: customerResult.status, error: customerResult.errorMessage } : undefined });
     }
 
     stage = 'done';
