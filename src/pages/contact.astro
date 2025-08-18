@@ -226,7 +226,7 @@ import Footer from "../components/footer.astro";
 					submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Sending...';
 					
 					try {
-						const response = await fetch('/api/contact', {
+						const response = await fetch('https://allochef.co.nz/api/contact', {
 							method: 'POST',
 							body: formData
 						});
