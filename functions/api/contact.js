@@ -8,10 +8,12 @@ const ALLOWED_ORIGINS = [
 ];
 
 function buildCorsHeaders(origin) {
-  const allowed = origin && ALLOWED_ORIGINS.includes(origin) ? origin : null;
+  // Reflect origin if in allowlist OR if localhost (dev convenience), else fallback to primary domain.
+  const isLocal = /localhost|127\.0\.0\.1/.test(origin || '');
+  const allowed = origin && (ALLOWED_ORIGINS.includes(origin) || isLocal) ? origin : 'https://allochef.co.nz';
   return {
     'Vary': 'Origin',
-    'Access-Control-Allow-Origin': allowed || 'https://allochef.co.nz',
+    'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
@@ -19,8 +21,11 @@ function buildCorsHeaders(origin) {
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+  const url = new URL(request.url);
+  const debug = url.searchParams.has('debug');
+  let stage = 'init';
   const origin = request.headers.get('Origin') || '';
-  const originAllowed = !origin || ALLOWED_ORIGINS.includes(origin);
+  const originAllowed = !origin || ALLOWED_ORIGINS.includes(origin) || /localhost|127\.0\.0\.1/.test(origin);
   const corsHeaders = buildCorsHeaders(origin);
 
   const respond = (status, payload, extraHeaders={}) => new Response(JSON.stringify(payload), {
@@ -29,7 +34,8 @@ export async function onRequestPost(context) {
   });
 
   if (!originAllowed) {
-    return respond(403, { success: false, code: 'ORIGIN_NOT_ALLOWED', message: 'Origin not allowed.' });
+    // Still send CORS headers so browser surfaces JSON not a network error
+    return respond(200, { success: false, code: 'ORIGIN_NOT_ALLOWED', message: 'Origin not allowed.' });
   }
 
   try {
@@ -39,6 +45,7 @@ export async function onRequestPost(context) {
 
     let formData;
     try {
+  stage = 'parse_form';
       formData = await request.formData();
     } catch (e) {
       return respond(400, { success: false, code: 'BAD_FORM_DATA', message: 'Invalid form submission.' });
@@ -56,7 +63,8 @@ export async function onRequestPost(context) {
     const message   = raw('message');
 
     // Validation rules
-    if (!firstName || !lastName || !email || !message) {
+  stage = 'validate_basic';
+  if (!firstName || !lastName || !email || !message) {
       return respond(400, { success: false, code: 'MISSING_FIELDS', message: 'Please fill in all required fields.' });
     }
     if (firstName.length > 60 || lastName.length > 60) {
@@ -73,7 +81,8 @@ export async function onRequestPost(context) {
       return respond(400, { success: false, code: 'INVALID_EMAIL', message: 'Please enter a valid email address.' });
     }
 
-    const { SENDGRID_API_KEY, CHEF_EMAIL, FROM_EMAIL } = env;
+  stage = 'env_check';
+  const { SENDGRID_API_KEY, CHEF_EMAIL, FROM_EMAIL } = env;
     if (!SENDGRID_API_KEY || !CHEF_EMAIL || !FROM_EMAIL) {
       console.error('Config error - missing env', { hasKey: !!SENDGRID_API_KEY, hasChef: !!CHEF_EMAIL, hasFrom: !!FROM_EMAIL });
       return respond(500, { success: false, code: 'SERVER_MISCONFIGURED', message: 'Email service not configured.' });
@@ -89,7 +98,8 @@ export async function onRequestPost(context) {
 
     const safeMessage = esc(message).replace(/\n/g, '<br>');
 
-    const chefEmailData = {
+  stage = 'prepare_payloads';
+  const chefEmailData = {
       personalizations: [
         {
           to: [{ email: CHEF_EMAIL }],
@@ -116,7 +126,7 @@ export async function onRequestPost(context) {
       ]
     };
 
-    const customerEmailData = {
+  const customerEmailData = {
       personalizations: [
         {
           to: [{ email, name: `${firstName} ${lastName}` }],
@@ -142,39 +152,45 @@ export async function onRequestPost(context) {
     };
 
     async function sendEmail(payload, label) {
-      const resp = await fetch('https://api.sendgrid.com/v3/mail/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${SENDGRID_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!resp.ok) {
-        const text = await resp.text();
-        console.error(`SendGrid ${label} email failed`, resp.status, text);
-        return { ok: false, status: resp.status, body: text };
+      try {
+        const resp = await fetch('https://api.sendgrid.com/v3/mail/send', {
+          method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          body: JSON.stringify(payload),
+        });
+        if (!resp.ok) {
+          const text = await resp.text();
+          console.error(`SendGrid ${label} email failed`, resp.status, text);
+          return { ok: false, status: resp.status, body: text };
+        }
+        return { ok: true };
+      } catch (err) {
+        console.error(`SendGrid ${label} email threw`, err);
+        return { ok: false, status: 0, body: String(err) };
       }
-      return { ok: true };
     }
 
+    stage = 'send_chef';
     const chefResult = await sendEmail(chefEmailData, 'chef');
     if (!chefResult.ok) {
-      return respond(502, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.' });
+      return respond(200, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.' , debug: debug ? { stage, detail: chefResult } : undefined });
     }
 
-    // Customer email is non-critical – failure shouldn't block success response.
+    stage = 'send_customer';
     const customerResult = await sendEmail(customerEmailData, 'customer');
     if (!customerResult.ok) {
-      // Include a soft warning (no sensitive internal details)
-      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.' });
+      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.' , debug: debug ? { stage, detail: customerResult } : undefined });
     }
 
-    return respond(200, { success: true, code: 'OK', message: "Thank you for your message! I'll get back to you within 24 hours." });
+    stage = 'done';
+    return respond(200, { success: true, code: 'OK', message: "Thank you for your message! I'll get back to you within 24 hours.", debug: debug ? { stage } : undefined });
 
   } catch (err) {
     console.error('Unhandled contact form error:', err);
-    return respond(500, { success: false, code: 'UNEXPECTED_ERROR', message: 'Unexpected server error. Please try again shortly.' });
+    return respond(500, { success: false, code: 'UNEXPECTED_ERROR', message: 'Unexpected server error. Please try again shortly.', debug: debug ? { stage, error: String(err) } : undefined });
   }
 }
 
