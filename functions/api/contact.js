@@ -181,16 +181,36 @@ export async function onRequestPost(context) {
       }
     }
 
+    function classifySendGridFailure(status, msg='') {
+      if (status === 401) return { hint: 'Invalid or unauthorized API key. Recreate a Mail Send key.', category: 'auth' };
+      if (status === 403) {
+        if (/sender identity/i.test(msg) || /from address/i.test(msg)) {
+          return { hint: 'FROM_EMAIL not verified. Verify single sender or authenticate domain.', category: 'sender_identity' };
+        }
+        return { hint: 'Permission issue. Ensure API key has Mail Send and sender is verified.', category: 'forbidden' };
+      }
+      if (status === 400) {
+        if (/personalizations/i.test(msg)) return { hint: 'Payload formatting issue. Check email addresses.', category: 'payload' };
+        return { hint: 'Bad request. Commonly unverified FROM or malformed address.', category: 'payload' };
+      }
+      if (status === 429) return { hint: 'Rate limited. Slow down requests.', category: 'rate_limit' };
+      if (status >= 500) return { hint: 'SendGrid service issue. Try again later.', category: 'provider_outage' };
+      if (status === 0) return { hint: 'Network error from edge to SendGrid.', category: 'network' };
+      return { hint: 'Unknown SendGrid failure. Check logs & dashboard activity.', category: 'unknown' };
+    }
+
     stage = 'send_chef';
     const chefResult = await sendEmail(chefEmailData, 'chef');
     if (!chefResult.ok) {
-      return respond(200, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.', debug: debug ? { stage, status: chefResult.status, error: chefResult.errorMessage } : undefined });
+      const classification = classifySendGridFailure(chefResult.status, chefResult.errorMessage);
+      return respond(200, { success: false, code: 'CHEF_EMAIL_FAIL', message: 'Unable to send notification email right now.', providerStatus: chefResult.status, hint: classification.hint, category: classification.category, debug: debug ? { stage, status: chefResult.status, error: chefResult.errorMessage } : undefined });
     }
 
     stage = 'send_customer';
     const customerResult = await sendEmail(customerEmailData, 'customer');
     if (!customerResult.ok) {
-      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.', debug: debug ? { stage, status: customerResult.status, error: customerResult.errorMessage } : undefined });
+      const classification = classifySendGridFailure(customerResult.status, customerResult.errorMessage);
+      return respond(200, { success: true, code: 'PARTIAL_SUCCESS', message: 'Message received. Reply email failed to send, but your enquiry was delivered.', providerStatus: customerResult.status, hint: classification.hint, category: classification.category, debug: debug ? { stage, status: customerResult.status, error: customerResult.errorMessage } : undefined });
     }
 
     stage = 'done';
