@@ -84,8 +84,9 @@ export async function onRequestPost(context) {
   stage = 'env_check';
   const { ZEPTO_API_KEY, CHEF_EMAIL, FROM_EMAIL } = env; // FROM_EMAIL will be used as Zepto "from" address
     if (!ZEPTO_API_KEY || !CHEF_EMAIL || !FROM_EMAIL) {
-      console.error('Config error - missing env', { hasKey: !!ZEPTO_API_KEY, hasChef: !!CHEF_EMAIL, hasFrom: !!FROM_EMAIL });
-      return respond(500, { success: false, code: 'SERVER_MISCONFIGURED', message: 'Email service not configured.' });
+      const diag = { hasKey: !!ZEPTO_API_KEY, hasChef: !!CHEF_EMAIL, hasFrom: !!FROM_EMAIL };
+      console.error('Config error - missing env', diag);
+      return respond(500, { success: false, code: 'SERVER_MISCONFIGURED', message: 'Email service not configured.', debug: debug ? diag : undefined });
     }
 
     // Basic HTML escaping for user supplied fields (very light weight)
