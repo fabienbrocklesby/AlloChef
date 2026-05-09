@@ -82,9 +82,9 @@ export async function onRequestPost(context) {
     }
 
   stage = 'env_check';
-  const { ZEPTO_API_KEY, CHEF_EMAIL, FROM_EMAIL } = env; // FROM_EMAIL will be used as Zepto "from" address
-    if (!ZEPTO_API_KEY || !CHEF_EMAIL || !FROM_EMAIL) {
-      const diag = { hasZEPTO_API_KEY: !!ZEPTO_API_KEY, hasCHEF_EMAIL: !!CHEF_EMAIL, hasFROM_EMAIL: !!FROM_EMAIL };
+  const { RESEND_API_KEY, CHEF_EMAIL, FROM_EMAIL } = env;
+    if (!RESEND_API_KEY || !CHEF_EMAIL || !FROM_EMAIL) {
+      const diag = { hasRESEND_API_KEY: !!RESEND_API_KEY, hasCHEF_EMAIL: !!CHEF_EMAIL, hasFROM_EMAIL: !!FROM_EMAIL };
       console.error('Config error - missing env', diag);
       return respond(500, { success: false, code: 'SERVER_MISCONFIGURED', message: 'Email service not configured.', diagnostics: diag });
     }
@@ -100,13 +100,13 @@ export async function onRequestPost(context) {
     const safeMessage = esc(message).replace(/\n/g, '<br>');
 
   stage = 'prepare_payloads';
-  // ZeptoMail payloads
+  // Resend payloads
   const chefEmailData = {
-      from: { address: FROM_EMAIL, name: 'Allô Chef Website' },
-      to: [ { email_address: { address: CHEF_EMAIL, name: 'Chef' } } ],
-      reply_to: [ { address: email } ],
+      from: `Allô Chef Website <${FROM_EMAIL}>`,
+      to: [CHEF_EMAIL],
+      reply_to: email,
       subject: `New Contact Form: ${firstName} ${lastName}`.slice(0, 120),
-      htmlbody: `
+      html: `
         <div style="font-family: Arial, sans-serif; max-width:600px; margin:0 auto; padding:20px;">
           <h2 style="color:#2563eb; margin-top:0;">New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${esc(firstName)} ${esc(lastName)}</p>
@@ -120,10 +120,11 @@ export async function onRequestPost(context) {
   };
 
   const customerEmailData = {
-      from: { address: FROM_EMAIL, name: 'Chef David - Allô Chef' },
-      to: [ { email_address: { address: email, name: `${firstName} ${lastName}` } } ],
+      from: `Allô Chef Website <${FROM_EMAIL}>`,
+      to: [email],
+      reply_to: email,
       subject: 'Thank you for contacting Allô Chef!',
-      htmlbody: `
+      html: `
         <div style="font-family: Arial, sans-serif; max-width:600px; margin:0 auto; padding:20px;">
           <h2 style="color:#2563eb; margin-top:0;">Thank You for Your Message!</h2>
           <p>Hello ${esc(firstName)},</p>
@@ -137,12 +138,12 @@ export async function onRequestPost(context) {
 
     async function sendEmail(payload, label) {
       try {
-        const resp = await fetch('https://api.zeptomail.com.au/v1.1/email', {
+        const resp = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`
+            'Authorization': `Bearer ${RESEND_API_KEY}`
           },
           body: JSON.stringify(payload)
         });
@@ -150,24 +151,24 @@ export async function onRequestPost(context) {
           const text = await resp.text();
           let parsed; try { parsed = JSON.parse(text); } catch(_) {}
           const errMsg = parsed?.message || parsed?.error || text.slice(0,400);
-          console.error(`ZeptoMail ${label} email failed`, resp.status, errMsg);
+          console.error(`Resend ${label} email failed`, resp.status, errMsg);
           return { ok: false, status: resp.status, errorMessage: errMsg };
         }
         return { ok: true };
       } catch (err) {
-        console.error(`ZeptoMail ${label} email threw`, err);
+        console.error(`Resend ${label} email threw`, err);
         return { ok: false, status: 0, errorMessage: String(err) };
       }
     }
 
     function classifyProviderFailure(status, msg='') {
-      if (status === 401) return { hint: 'Invalid ZeptoMail API key or key not authorized.', category: 'auth' };
-      if (status === 403) return { hint: 'Forbidden – check domain / sender verification in ZeptoMail.', category: 'forbidden' };
+      if (status === 401) return { hint: 'Invalid Resend API key.', category: 'auth' };
+      if (status === 403) return { hint: 'Sender/domain not verified or not allowed.', category: 'forbidden' };
       if (status === 400) return { hint: 'Bad request – verify email addresses and payload shape.', category: 'payload' };
-      if (status === 429) return { hint: 'Rate limited by ZeptoMail – slow down.', category: 'rate_limit' };
-      if (status >= 500) return { hint: 'ZeptoMail service issue – retry later.', category: 'provider_outage' };
-      if (status === 0) return { hint: 'Network error reaching ZeptoMail.', category: 'network' };
-      return { hint: 'Unknown ZeptoMail failure – check logs.', category: 'unknown' };
+      if (status === 429) return { hint: 'Resend rate limit.', category: 'rate_limit' };
+      if (status >= 500) return { hint: 'Resend service issue – retry later.', category: 'provider_outage' };
+      if (status === 0) return { hint: 'Network error reaching Resend.', category: 'network' };
+      return { hint: 'Unknown Resend failure – check logs.', category: 'unknown' };
     }
 
     stage = 'send_chef';
