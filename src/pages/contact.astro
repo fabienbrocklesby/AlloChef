@@ -233,12 +233,12 @@ import Footer from "../components/footer.astro";
 						
 						const result = await response.json();
 						
-						if (response.ok) {
+						if (response.ok && result.success) {
 							messageDiv.className = 'mt-6 alert alert-success';
 							messageDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + result.message;
 							form.reset();
 						} else {
-							throw new Error(result.error || 'Something went wrong');
+							throw new Error(result.message || result.code || 'Something went wrong');
 						}
 					} catch (error) {
 						messageDiv.className = 'mt-6 alert alert-error';
